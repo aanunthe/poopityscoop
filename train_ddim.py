@@ -400,7 +400,10 @@ def main(args):
             # 🛠️ Change 2: Modify checkpointing logic
             if accelerator.is_main_process and global_step % 100 == 0:
                 # Save checkpoint for multi-GPU training and let Accelerator handle the total_limit
-                accelerator.save_state(os.path.join(accelerator_config.project_dir, f"checkpoint-{global_step}"))
+                # Save model weights only (lighter than full state) and compatible with eval script
+                checkpoint_dir = os.path.join(accelerator_config.project_dir, f"checkpoint-{global_step}")
+                os.makedirs(checkpoint_dir, exist_ok=True)
+                accelerator.unwrap_model(model).save_pretrained(checkpoint_dir)
                 
                 pipeline = FastDDIMPipeline(accelerator.unwrap_model(model), noise_scheduler)
                 evaluate(args, epoch, encoder_hidden_states, img, pipeline, accelerator, global_step)
