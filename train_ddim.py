@@ -17,6 +17,7 @@ import torch
 import subprocess
 import sys
 import glob
+import shutil
 from torch.optim import AdamW
 from diffusers import DDIMScheduler, UNet2DConditionModel
 from diffusers.optimization import get_cosine_schedule_with_warmup
@@ -334,6 +335,10 @@ def main(args):
             # Move data to device efficiently
             img = batch['img']
             latent = batch['bm']
+
+            #STEP CAP
+            if steps >= 150:
+                break
             
             # 💡 FIX: Normalize the image tensor to the [0, 1] range before passing to the CLIP processor
             img_normalized = (img + 1.0) / 2.0
@@ -398,10 +403,22 @@ def main(args):
                 })
 
             # 🛠️ Change 2: Modify checkpointing logic
-            if accelerator.is_main_process and global_step % 100 == 0:
-                # Save checkpoint for multi-GPU training and let Accelerator handle the total_limit
+            if accelerator.is_main_process and global_step % args.save_freq == 0:
+                # Manual Checkpoint Rotation
+                # Get list of existing checkpoints
+                save_dir = accelerator_config.project_dir
+                if os.path.exists(save_dir):
+                    checkpoints = sorted([d for d in os.listdir(save_dir) if d.startswith("checkpoint-")], key=lambda x: int(x.split("-")[1]))
+                    
+                    # Keep only the most recent 1 checkpoint to save massive space
+                    if len(checkpoints) >= 1:
+                        for d in checkpoints[:-1]: # Delete all except the absolute latest
+                             path_to_remove = os.path.join(save_dir, d)
+                             print(f"Removing old checkpoint to save space: {path_to_remove}")
+                             shutil.rmtree(path_to_remove, ignore_errors=True)
+
                 # Save model weights only (lighter than full state) and compatible with eval script
-                checkpoint_dir = os.path.join(accelerator_config.project_dir, f"checkpoint-{global_step}")
+                checkpoint_dir = os.path.join(save_dir, f"checkpoint-{global_step}")
                 os.makedirs(checkpoint_dir, exist_ok=True)
                 accelerator.unwrap_model(model).save_pretrained(checkpoint_dir)
                 

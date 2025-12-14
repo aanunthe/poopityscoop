@@ -151,6 +151,7 @@ def main(args):
             img = batch['img'] # Distorted image, [-1, 1]
             gt_bm = batch['bm'] # Ground truth BM, [-1, 1]
 
+
             # --- Get CLIP condition ---
             img_normalized = (img + 1.0) / 2.0 # Normalize to [0, 1] for CLIP
             clip_inputs = processor(images=img_normalized, return_tensors='pt', do_rescale=False)
@@ -188,6 +189,11 @@ def main(args):
                 cv2.imwrite(os.path.join(gt_dir, save_name), gt_img_bgr)
                 
                 image_counter += 1
+
+                #STEP
+                #STEP
+                if image_counter >= 150:
+                    break
 
     print(f"Finished generating {image_counter} image pairs in {args.output_dir}")
 
