@@ -193,6 +193,10 @@ def main(args):
                 #STEP CAP
                 if image_counter >= 150:
                     break
+            
+            #TOTAL STEP CAP
+            if image_counter >= 150:
+                break
 
     print(f"Finished generating {image_counter} image pairs in {args.output_dir}")
 
