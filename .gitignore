@@ -1,8 +1,9 @@
 /data/
 /wandb
 /wandb/
-/logs
+/logs/
 /wandb/latest-run
+/.venv
 /__pycache__/
 /.kiro
 *.pyc
