@@ -82,6 +82,9 @@ def main(args):
         os.path.join(args.checkpoint_path, "model.safetensors"),
         os.path.join(args.checkpoint_path, "unet", "diffusion_pytorch_model.bin"),
         os.path.join(args.checkpoint_path, "unet", "diffusion_pytorch_model.safetensors"),
+        # Add support for direct save_pretrained output
+        os.path.join(args.checkpoint_path, "diffusion_pytorch_model.bin"),
+        os.path.join(args.checkpoint_path, "diffusion_pytorch_model.safetensors"),
     ]
 
     unet_weights_path = None

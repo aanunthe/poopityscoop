@@ -410,7 +410,9 @@ def main(args):
     # Save final model
     if accelerator.is_main_process:
         final_checkpoint_dir = os.path.join(accelerator_config.project_dir, f"checkpoint-{global_step}")
-        accelerator.save_state(final_checkpoint_dir)
+        # Save only the UNet for evaluation (more compatible format)
+        unwrap_model = accelerator.unwrap_model(model)
+        unwrap_model.save_pretrained(final_checkpoint_dir)
         print(f"Saved final checkpoint to {final_checkpoint_dir}")
         
         # Free up memory before evaluation
