@@ -190,8 +190,7 @@ def main(args):
                 
                 image_counter += 1
 
-                #STEP
-                #STEP
+                #STEP CAP
                 if image_counter >= 150:
                     break
 

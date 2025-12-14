@@ -337,7 +337,7 @@ def main(args):
             latent = batch['bm']
 
             #STEP CAP
-            if steps >= 150:
+            if step >= 150:
                 break
             
             # 💡 FIX: Normalize the image tensor to the [0, 1] range before passing to the CLIP processor
