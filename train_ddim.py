@@ -276,7 +276,7 @@ def main(args):
     )
     
     # Load CLIP model for conditioning with optimizations
-    processor = CLIPProcessor.from_pretrained('openai/clip-vit-large-patch14')
+    processor = CLIPProcessor.from_pretrained('openai/clip-vit-large-patch14', use_fast=True)
     clip_model = CLIPModel.from_pretrained('openai/clip-vit-large-patch14')
     
     # Freeze CLIP model for faster training
@@ -523,10 +523,10 @@ def launch_training():
         print(f"Detected {torch.cuda.device_count()} GPUs. Setting up 4-GPU training...")
         
         # Set environment variables for optimal 4-GPU performance
-        os.environ['NCCL_TREE_THRESHOLD'] = '0'
-        os.environ['NCCL_ALGO'] = 'Tree'
-        os.environ['NCCL_MIN_NCHANNELS'] = '4'
-        os.environ['NCCL_MAX_NCHANNELS'] = '16'
+        # os.environ['NCCL_TREE_THRESHOLD'] = '0'
+        # os.environ['NCCL_ALGO'] = 'Tree'
+        # os.environ['NCCL_MIN_NCHANNELS'] = '4'
+        # os.environ['NCCL_MAX_NCHANNELS'] = '16'
         
         # Increase batch size for 4-GPU training
         if args.batch_size < 8:
