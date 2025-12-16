@@ -529,9 +529,10 @@ def launch_training():
         # os.environ['NCCL_MAX_NCHANNELS'] = '16'
         
         # Increase batch size for 4-GPU training
-        if args.batch_size < 8:
-            print(f"Increasing batch size from {args.batch_size} to {args.batch_size * 4} for 4-GPU training")
-            args.batch_size = args.batch_size * 4
+        # Increase batch size for 4-GPU training
+        # if args.batch_size < 8:
+        #     print(f"Increasing batch size from {args.batch_size} to {args.batch_size * 4} for 4-GPU training")
+        #     args.batch_size = args.batch_size * 4
             
     elif torch.cuda.device_count() > 1:
         print(f"Detected {torch.cuda.device_count()} GPUs. Using available GPUs...")
