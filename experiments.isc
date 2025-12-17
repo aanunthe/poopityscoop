@@ -1,7 +1,7 @@
 isc_project_id = "prj-pineapple-elemental-peony-250902"
 experiment_name = "run1"
 gpus = 4
-compute_mode = "cycle"
+compute_mode = "interruptible"
 dataset_id_list = ["uds-rift-cat-munchkin-250914"]
 command = '''
 cd /root/poopityscoop/ &&
