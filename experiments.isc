@@ -4,6 +4,6 @@ gpus = 4
 compute_mode = "cycle"
 dataset_id_list = ["uds-rift-cat-munchkin-250914"]
 command = '''
-cd /root/DiffusionDocumentRestoration/ &&
-source /root/.ddrm/bin/activate && 
-python ./train_ddim.py --dataset_name "/data/uds-rift-cat-munchkin-250914"'''
+cd /root/poopityscoop/ &&
+source /root/poopityscoop/.venv/bin/activate && 
+accelerate launch --config_file acc_config.yaml ./train_ddim.py --dataset_name "/data/uds-rift-cat-munchkin-250914" --gpu_ids "0,1,2,3" --do_eval'''
